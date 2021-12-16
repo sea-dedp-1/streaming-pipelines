@@ -9,6 +9,7 @@ hadoop_healthcheck:
 yarn_healthcheck:
 	curl -sS --fail http://localhost:8088/cluster > /dev/null
 
+.PHONY:e2e
 e2e:
 	./docker/docker-compose.sh -f docker/docker-compose.yml -f docker/docker-compose.e2e.yml up --build -d
 
