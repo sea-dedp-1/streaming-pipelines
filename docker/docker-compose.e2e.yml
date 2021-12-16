@@ -1,5 +1,13 @@
 version: "3"
 services:
+  mock-json-server:
+    image: halverneus/static-file-server
+    networks:
+      - streaming-data-internal
+    ports:
+      - 8080:8080
+    volumes:
+      - ./data:/web
 
   zookeeper-seed:
     build:
@@ -22,7 +30,7 @@ services:
     networks:
       - streaming-data-internal
     environment:
-      - PRODUCER_URL=https://gbfs.citibikenyc.com/gbfs/en/station_information.json
+      - PRODUCER_URL=http://mock-json-server:8080/mock_station_information.json
       - PRODUCER_TOPIC=e2e_station_information
       - PRODUCER_PRODUCERID=e2e_producer_station_information
       - PRODUCER_CRON=*/3 * * * * *
@@ -37,7 +45,7 @@ services:
     networks:
       - streaming-data-internal
     environment:
-      - PRODUCER_URL=https://gbfs.citibikenyc.com/gbfs/en/station_status.json
+      - PRODUCER_URL=http://mock-json-server:8080/mock_station_status.json
       - PRODUCER_TOPIC=e2e_station_status
       - PRODUCER_PRODUCERID=e2e_producer_station_status
       - PRODUCER_CRON=*/3 * * * * *
@@ -52,7 +60,7 @@ services:
     networks:
       - streaming-data-internal
     environment:
-      - PRODUCER_URL=https://api.citybik.es/v2/networks/ford-gobike
+      - PRODUCER_URL=http://mock-json-server:8080/mock_station_data_sf.json
       - PRODUCER_TOPIC=e2e_station_data_sf
       - PRODUCER_PRODUCERID=e2e_producer_station-san_francisco
       - PRODUCER_CRON=*/3 * * * * *
@@ -67,7 +75,7 @@ services:
     networks:
       - streaming-data-internal
     environment:
-      - PRODUCER_URL=https://api.citybik.es/v2/networks/le-velo
+      - PRODUCER_URL=http://mock-json-server:8080/mock_station_data_marseille.json
       - PRODUCER_TOPIC=e2e_station_data_marseille
       - PRODUCER_PRODUCERID=e2e_producer_station-marseille
       - PRODUCER_CRON=*/3 * * * * *

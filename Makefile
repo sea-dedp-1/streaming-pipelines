@@ -12,4 +12,5 @@ yarn_healthcheck:
 e2e:
 	./docker/docker-compose.sh -f docker/docker-compose.yml -f docker/docker-compose.e2e.yml up --build -d
 
-down_e2e: down_dev
+down_e2e:
+	./docker/docker-compose.sh -f docker/docker-compose.yml -f docker/docker-compose.e2e.yml down --volumes

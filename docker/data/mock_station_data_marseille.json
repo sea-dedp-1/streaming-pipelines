@@ -1,0 +1,59 @@
+{
+  "network": {
+    "company": [
+      "JCDecaux"
+    ],
+    "href": "/v2/networks/le-velo",
+    "id": "le-velo",
+    "license": {
+      "name": "Open Licence",
+      "url": "https://developer.jcdecaux.com/#/opendata/licence"
+    },
+    "location": {
+      "city": "Marseille",
+      "country": "FR",
+      "latitude": 43.296482,
+      "longitude": 5.36978
+    },
+    "name": "Le vélo",
+    "source": "https://developer.jcdecaux.com",
+    "stations": [
+      {
+        "empty_slots": 15,
+        "extra": {
+          "address": "Avenue Jules Cantini croisement Rue Louis Rège sur parvis",
+          "banking": true,
+          "bonus": false,
+          "last_update": 1639644597000,
+          "slots": 18,
+          "status": "OPEN",
+          "uid": 8310
+        },
+        "free_bikes": 3,
+        "id": "e83c484546a05fcd89877c0d3ac8e086",
+        "latitude": 43.281484,
+        "longitude": 5.391515,
+        "name": "8310- CANTINI REGE",
+        "timestamp": "2021-12-16T08:53:54.324000Z"
+      },
+      {
+        "empty_slots": 10,
+        "extra": {
+          "address": "ROOSEVELT ORAN - 53 COURS FRANKLIN ROOSEVELT ANGLE RUE D'ORAN",
+          "banking": true,
+          "bonus": true,
+          "last_update": 1639644198000,
+          "slots": 10,
+          "status": "OPEN",
+          "uid": 5220
+        },
+        "free_bikes": 0,
+        "id": "23bff327b7c92614ec8494fb75399114",
+        "latitude": 43.29899195650368,
+        "longitude": 5.388799115293999,
+        "name": "5220-ROOSEVELT - ORAN",
+        "timestamp": "2021-12-16T08:53:54.341000Z"
+      }
+    ]
+  }
+}
