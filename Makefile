@@ -2,11 +2,7 @@ dev:
 	./sbin/buildAndRunLocal.sh
 
 down_dev:
-	docker-compose \
-	  --project-name streamingdatapipeline \
-	  --project-directory docker \
-	  -f docker/docker-compose.yml \
-	  down --volumes --remove-orphans
+	./docker/docker-compose.sh -f docker/docker-compose.yml down --volumes
 
 kafka_shell:
 	docker exec -it streamingdatapipeline_kafka_1 /bin/bash
@@ -25,11 +21,6 @@ yarn_healthcheck:
 	curl -sS --fail http://localhost:8088/cluster > /dev/null
 
 e2e:
-	docker-compose \
-	  --project-name=streamingdatapipeline \
-	  --project-directory docker \
-	  -f docker/docker-compose.yml \
-	  -f docker/docker-compose.e2e.yml \
-	  up --build -d
+	./docker/docker-compose.sh -f docker/docker-compose.yml -f docker/docker-compose.e2e.yml up --build -d
 
 down_e2e: down_dev
