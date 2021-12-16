@@ -4,17 +4,6 @@ dev:
 down_dev:
 	./docker/docker-compose.sh -f docker/docker-compose.yml down --volumes
 
-kafka_shell:
-	docker exec -it streamingdatapipeline_kafka_1 /bin/bash
-
-zookeeper_shell:
-	docker exec -it streamingdatapipeline_zookeeper_1 zkCli.sh -server localhost:2181
-
-zk_shell: zookeeper_shell
-
-hadoop_ls_root:
-	docker exec -it streamingdatapipeline_hadoop_1 /usr/local/hadoop/bin/hadoop fs -ls /
-
 hadoop_healthcheck:
 	curl -sS --fail http://localhost:50070 > /dev/null
 yarn_healthcheck:
