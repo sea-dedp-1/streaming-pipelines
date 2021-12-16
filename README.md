@@ -3,8 +3,46 @@ Streaming pipeline repo for data engineering training program
 
 See producers and consumers set up README in their respective directories
 
-# local environment setup
-Make sure you have sbt installed.
-Make sure you have docker installed.
+## Local environment setup
 
-Run `./sbin/buildAndRunLocal.sh` to create Docker containers for running and testing this setup on your local machine
+**Pre-requisites:**
+- sbt is installed
+- docker is installed
+
+To spin up a local environment, use
+```shell
+make dev
+```
+
+The above command will create Docker containers for running and testing this setup on your local machine.
+
+To spin down the environment, use
+```shell
+make down_dev
+```
+
+### Health checks on local environment
+
+#### For hadoop
+```shell
+make hadoop_healthcheck
+```
+
+#### For yarn
+```shell
+make yarn_healthcheck
+```
+
+## Testing
+
+### End-to-End (e2e) testing
+
+To spin up the e2e environment, use
+```shell
+make e2e
+```
+
+To spin down the e2e environment, use
+```shell
+make down_e2e
+```
