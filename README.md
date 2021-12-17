@@ -3,6 +3,12 @@ Streaming pipeline repo for data engineering training program
 
 See producers and consumers set up README in their respective directories
 
+## Enable pre-push hooks
+
+```bash
+git config --local core.hooksPath .githooks/
+```
+
 ## Local environment setup
 
 **Pre-requisites:**

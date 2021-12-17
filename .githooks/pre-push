@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+make dev
+./integration-tests/run-all-integration-tests.sh
