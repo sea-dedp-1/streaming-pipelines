@@ -63,14 +63,14 @@ ssh ingester.${TRAINING_COHORT}.training <<EOF
 set -e
 
 function kill_process {
-    query=\$1
-    pid=`ps aux | grep \$query | grep -v "grep" |  awk "{print \\\$2}"`
+    query="\${1}"
+    pid=\$(ps aux | grep "\${query}" | grep -v "grep" |  awk "{print \\\$2}")
 
     if [ -z "\$pid" ];
     then
         echo "no \${query} process running"
     else
-        kill -9 \$pid
+        echo "\$pid" | xargs -I{} kill -9 {}
     fi
 }
 
