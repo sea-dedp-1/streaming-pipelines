@@ -64,13 +64,12 @@ set -e
 
 function kill_process {
     query="\${1}"
-    pid=\$(ps aux | grep "\${query}" | grep -v "grep" |  awk "{print \\\$2}")
 
-    if [ -z "\$pid" ];
+    if [ -z "\${query}" ];
     then
-        echo "no \${query} process running"
+        echo "Query cannot be empty"
     else
-        echo "\$pid" | xargs -I{} kill -9 {}
+        pkill -9 "\${query}"
     fi
 }
 
