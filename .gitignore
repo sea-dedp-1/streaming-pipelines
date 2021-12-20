@@ -31,3 +31,7 @@ target/
 metastore_db/
 
 *.log
+
+# E2E Generated files
+docker/data/mock_station_information.json
+docker/data/mock_station_status.json

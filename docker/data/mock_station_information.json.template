@@ -1,0 +1,32 @@
+{
+  "data": {
+    "stations": [
+      {
+        "station_id": "3117",
+        "rental_uris": {
+          "ios": "https://bkn.lft.to/lastmile_qr_scan",
+          "android": "https://bkn.lft.to/lastmile_qr_scan"
+        },
+        "lat": 40.73564,
+        "region_id": "71",
+        "eightd_has_key_dispenser": false,
+        "capacity": 27,
+        "lon": -73.95866,
+        "eightd_station_services": [],
+        "station_type": "classic",
+        "has_kiosk": true,
+        "rental_methods": [
+          "CREDITCARD",
+          "KEY"
+        ],
+        "short_name": "5944.01",
+        "external_id": "66dd217d-0aca-11e7-82f6-3863bb44ef7c",
+        "legacy_id": "3117",
+        "name": "Franklin St & Dupont St",
+        "electric_bike_surcharge_waiver": false
+      }
+    ]
+  },
+  "last_updated": -1,
+  "ttl": 5
+}
