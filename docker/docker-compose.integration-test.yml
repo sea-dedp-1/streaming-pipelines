@@ -1,0 +1,59 @@
+version: "3"
+services:
+  mock-json-server:
+    image: halverneus/static-file-server
+    networks:
+      - streaming-data-internal
+    ports:
+      - 8080:8080
+    volumes:
+      - ./data:/web
+
+  station-information-producer:
+    build:
+      context: ../CitibikeApiProducer
+      dockerfile: Dockerfile-station-information
+    depends_on:
+      - kafka
+      - zookeeper-seed
+    networks:
+      - streaming-data-internal
+    environment:
+      - PRODUCER_URL=http://mock-json-server:8080/mock_station_information.json
+
+  station-status-producer:
+    build:
+      context: ../CitibikeApiProducer
+      dockerfile: Dockerfile-station-status
+    depends_on:
+      - kafka
+      - zookeeper-seed
+    networks:
+      - streaming-data-internal
+    environment:
+      - PRODUCER_URL=http://mock-json-server:8080/mock_station_status.json
+
+  station-san-francisco-producer:
+    build:
+      context: ../CitibikeApiProducer
+      dockerfile: Dockerfile-station-san-francisco
+    depends_on:
+      - kafka
+      - zookeeper-seed
+    networks:
+      - streaming-data-internal
+    environment:
+      - PRODUCER_URL=http://mock-json-server:8080/mock_station_data_sf.json
+
+  station-marseille-producer:
+    build:
+      context: ../CitibikeApiProducer
+      dockerfile: Dockerfile-station-marseille
+    depends_on:
+      - kafka
+      - zookeeper-seed
+    networks:
+      - streaming-data-internal
+    environment:
+      - PRODUCER_URL=http://mock-json-server:8080/mock_station_data_marseille.json
+
