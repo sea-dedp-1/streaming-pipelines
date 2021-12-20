@@ -9,6 +9,13 @@ services:
     volumes:
       - ./data:/web
 
+  mock-json-server-seeder:
+    image: python:3.9-alpine3.15
+    volumes:
+      - ./scripts:/scripts
+      - ./data:/web
+    command: sh /scripts/setup_mock_data_files.sh
+
   station-information-producer:
     build:
       context: ../CitibikeApiProducer
@@ -20,6 +27,7 @@ services:
       - streaming-data-internal
     environment:
       - PRODUCER_URL=http://mock-json-server:8080/mock_station_information.json
+      - PRODUCER_CRON=*/3 * * * * *
 
   station-status-producer:
     build:
@@ -32,6 +40,7 @@ services:
       - streaming-data-internal
     environment:
       - PRODUCER_URL=http://mock-json-server:8080/mock_station_status.json
+      - PRODUCER_CRON=*/3 * * * * *
 
   station-san-francisco-producer:
     build:
@@ -44,6 +53,7 @@ services:
       - streaming-data-internal
     environment:
       - PRODUCER_URL=http://mock-json-server:8080/mock_station_data_sf.json
+      - PRODUCER_CRON=*/3 * * * * *
 
   station-marseille-producer:
     build:
@@ -56,4 +66,5 @@ services:
       - streaming-data-internal
     environment:
       - PRODUCER_URL=http://mock-json-server:8080/mock_station_data_marseille.json
+      - PRODUCER_CRON=*/3 * * * * *
 
