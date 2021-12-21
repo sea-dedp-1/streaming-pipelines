@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eux
+set -e
 
 clean_up () {
   make down_integration_test
@@ -10,12 +10,18 @@ trap clean_up EXIT
 
 make run_integration_test
 
-./integration-tests/test-kafka-producer.sh -t station_data_marseille
-./integration-tests/test-kafka-producer.sh -t station_data_sf
-./integration-tests/test-kafka-producer.sh -t station_information
-./integration-tests/test-kafka-producer.sh -t station_status
+for TOPIC in station_data_marseille station_data_sf station_information station_status
+do
+  echo "===== Integration test for Kafka Topic: ${TOPIC} ====="
 
-./integration-tests/test-raw-data-saver.sh stationDataMarseille
-./integration-tests/test-raw-data-saver.sh stationDataSF
-./integration-tests/test-raw-data-saver.sh stationInformation
-./integration-tests/test-raw-data-saver.sh stationStatus
+  bash ./integration-tests/retry.sh \
+    "./integration-tests/test-kafka-producer.sh -t ${TOPIC}"
+done
+
+for RAW_DATA_FOLDER in stationDataMarseille stationDataSF stationInformation stationStatus
+do
+  echo "===== Integration test for HDFS raw data: ${RAW_DATA_FOLDER} ====="
+
+  bash ./integration-tests/retry.sh \
+    "./integration-tests/test-raw-data-saver.sh ${RAW_DATA_FOLDER}"
+done
