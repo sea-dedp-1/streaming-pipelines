@@ -18,11 +18,10 @@ object StationDataTransformation {
     extractSFStationStatus(payload)
   }
 
-  private def extractSFStationStatus(payload: Any) = {
+  private def extractSFStationStatus(payload: Any): Seq[StationData] = {
+    val network: Any = payload.asInstanceOf[Map[String, Any]].getOrElse("network", Map.empty[String, Any])
 
-    val network: Any = payload.asInstanceOf[Map[String, Any]]("network")
-
-    val stations: Any = network.asInstanceOf[Map[String, Any]]("stations")
+    val stations: Any = network.asInstanceOf[Map[String, Any]].getOrElse("stations", Seq.empty[Map[String, Any]])
 
     stations.asInstanceOf[Seq[Map[String, Any]]]
       .map(x => {
