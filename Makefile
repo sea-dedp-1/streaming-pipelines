@@ -26,5 +26,7 @@ down_e2e:
 	./docker/docker-compose.sh -f docker/docker-compose.yml -f docker/docker-compose.e2e.yml down --volumes
 .PHONY:e2e
 e2e: down_e2e up_e2e
-run_e2e:
-	sh ./e2e/run-all-e2e-tests.sh
+run_e2e: e2e
+	sh ./e2e/run-all-e2e-tests.sh; ret=$$? \
+	make down_e2e; \
+	exit $$ret

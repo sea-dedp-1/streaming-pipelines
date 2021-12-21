@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Verify the raw data server not empty
+# Verify the station mart data has expected row count
 RESULT=$(docker exec streamingdatapipeline_hadoop_1 /usr/local/hadoop/bin/hadoop fs -cat "/tw/stationMart/data/part-*.csv")
 
 SF_ROW_COUNT=2
