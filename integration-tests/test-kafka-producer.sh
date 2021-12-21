@@ -7,20 +7,32 @@ do
     esac
 done
 
-echo "===== Integration Test for Kafka Topic: $TOPIC ====="
+TEST_NAME="Integration Test for Kafka Topic: ${TOPIC}"
+echo "===== ${TEST_NAME} ====="
 
-echo "Starting docker exec command..."
-KAFKA_COMMAND="kafka-console-consumer.sh --zookeeper zookeeper:2181 --topic $TOPIC --max-messages 1 --timeout-ms 60000"
-KAFKA_MESSAGE=$(docker exec -t streamingdatapipeline_kafka_1 /bin/bash -c "$KAFKA_COMMAND")
+WAIT_INTERVAL_IN_SECONDS=10
+TRIES=0
+MAX_TRIES=18
 
-echo "Checking for metadata in kafka message..."
-IS_TOPIC_FOUND=$(echo "$KAFKA_MESSAGE" | grep -q "metadata"; echo $?)
+# Try for up to 3 minutes
+until [[ "${TRIES}" -ge "${MAX_TRIES}" ]]
+do
+  echo "Starting docker exec command..."
+  KAFKA_COMMAND="kafka-console-consumer.sh --zookeeper zookeeper:2181 --topic $TOPIC --max-messages 1 --timeout-ms 60000"
+  KAFKA_MESSAGE=$(docker exec -t streamingdatapipeline_kafka_1 /bin/bash -c "$KAFKA_COMMAND")
 
-if [ "$IS_TOPIC_FOUND" = 0 ]
-  then
-    echo "PASSED integration test for topic: $TOPIC"
-  else
-    echo "FAILED integration test for topic: $TOPIC"
-fi
+  echo "Checking for metadata in kafka message..."
+  IS_TOPIC_FOUND=$(echo "$KAFKA_MESSAGE" | grep -q "metadata"; echo $?)
 
-exit "$IS_TOPIC_FOUND"
+  if [ "$IS_TOPIC_FOUND" = 0 ]; then
+    echo -e "\033[0;32;1mPASSED \033[0m ${TEST_NAME}"
+    exit 0
+  fi
+
+  TRIES=$((TRIES+1))
+  echo "[Try ${TRIES} / ${MAX_TRIES}] Topic ${TOPIC} not found. Retrying..."
+  sleep ${WAIT_INTERVAL_IN_SECONDS}
+done
+
+echo -e "\033[0;31;1mFAILED \033[0m ${TEST_NAME}"
+exit 1
