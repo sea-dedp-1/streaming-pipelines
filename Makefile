@@ -9,17 +9,22 @@ hadoop_healthcheck:
 yarn_healthcheck:
 	curl -sS --fail http://localhost:8088/cluster > /dev/null
 
-integration_test:
+up_integration_test:
 	./docker/docker-compose.sh -f docker/docker-compose.yml -f docker/docker-compose.integration-test.yml up --build -d
 
 down_integration_test:
 	./docker/docker-compose.sh -f docker/docker-compose.yml -f docker/docker-compose.integration-test.yml down --volumes
 
-run_integration_test: down_integration_test integration_test
+integration_test: down_integration_test up_integration_test
+run_integration_test:
+	./integration-tests/run-all-integration-tests.sh
 
-.PHONY:e2e
-e2e:
+up_e2e:
 	./docker/docker-compose.sh -f docker/docker-compose.yml -f docker/docker-compose.e2e.yml up --build -d
 
 down_e2e:
 	./docker/docker-compose.sh -f docker/docker-compose.yml -f docker/docker-compose.e2e.yml down --volumes
+.PHONY:e2e
+e2e: down_e2e up_e2e
+run_e2e:
+	sh ./e2e/run-all-e2e-tests.sh

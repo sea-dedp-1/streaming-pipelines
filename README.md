@@ -43,6 +43,11 @@ make yarn_healthcheck
 
 ### End-to-End (e2e) testing
 
+To run the e2e tests, use
+```shell
+make run_e2e
+```
+
 To spin up the e2e environment, use
 ```shell
 make e2e
