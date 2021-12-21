@@ -32,3 +32,6 @@ dependencies {
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile("junit:junit")
 }
+
+// To fix log4j vulnerability (to be removed after upgrading spring boot to 2.6.2)
+ext['log4j2.version'] = '2.17.0'
