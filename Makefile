@@ -15,6 +15,8 @@ integration_test:
 down_integration_test:
 	./docker/docker-compose.sh -f docker/docker-compose.yml -f docker/docker-compose.integration-test.yml down --volumes
 
+run_integration_test: down_integration_test integration_test
+
 .PHONY:e2e
 e2e:
 	./docker/docker-compose.sh -f docker/docker-compose.yml -f docker/docker-compose.e2e.yml up --build -d

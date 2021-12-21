@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
-make integration_test
+
+set -e
+
 ./integration-tests/run-all-integration-tests.sh

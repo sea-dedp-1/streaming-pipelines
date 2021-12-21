@@ -2,6 +2,14 @@
 
 set -eux
 
+clean_up () {
+  make down_integration_test
+}
+
+trap clean_up EXIT
+
+make run_integration_test
+
 ./integration-tests/test-kafka-producer.sh -t station_data_marseille
 ./integration-tests/test-kafka-producer.sh -t station_data_sf
 ./integration-tests/test-kafka-producer.sh -t station_information
