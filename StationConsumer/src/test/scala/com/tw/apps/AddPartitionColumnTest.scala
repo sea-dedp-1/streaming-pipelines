@@ -2,19 +2,33 @@ package com.tw.apps
 
 import org.apache.spark.sql.{Row, SparkSession}
 import org.apache.spark.sql.catalyst.ScalaReflection
-import org.apache.spark.sql.types.StructType
+import org.apache.spark.sql.types._
 import org.scalatest._
+
 import scala.collection.JavaConversions._
+import StationDataPartition.StationDataDataframe
+
+import java.util.TimeZone
 
 class AddPartitionColumnTest extends FeatureSpec with Matchers with GivenWhenThen {
 
-
-  feature("Apply station status transformations to data frame") {
-
+  feature("Apply partition transformations to data frame") {
+    val initialTzId = TimeZone.getDefault.toZoneId
+    TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
 
     val spark = SparkSession.builder.appName("Test App").master("local").getOrCreate()
 
-    val schema = ScalaReflection.schemaFor[StationData].dataType.asInstanceOf[StructType]
+    val schema = StructType(List(
+      StructField("bikes_available",IntegerType,false),
+      StructField("docks_available",IntegerType,false),
+      StructField("is_renting",BooleanType,false),
+      StructField("is_returning",BooleanType,false),
+      StructField("last_updated",LongType,false),
+      StructField("station_id",StringType,false),
+      StructField("name",StringType,false),
+      StructField("latitude",DoubleType,false),
+      StructField("longitude",DoubleType,false)
+    ))
 
     val data = Seq(
       Row(14, 4, true, true, 1639755555L, "3210", "Pershing Field", 40.742677141, -74.051788633),
@@ -25,19 +39,19 @@ class AddPartitionColumnTest extends FeatureSpec with Matchers with GivenWhenThe
 
     val initialDf = spark.createDataFrame(data, schema)
 
-
-    scenario("Add Partition Columns") {
+    scenario("Add Partition Columns for valid data") {
 
       Given("Pre-transformed data for Station Consumer")
 
 
       When("Partition Columns are Added")
 
-      val resultDf = ???
+      val resultDf = initialDf.addPartition()
 
       Then("The following columns are expected")
 
-      val expectedSchema = ScalaReflection.schemaFor[PartitionedStationData].dataType.asInstanceOf[StructType]
+      val expectedSchema = schema.add(StructField("dt",StringType,true))
+                                  .add(StructField("hour",StringType,true))
 
       val expectedData = Seq(
         Row(14, 4, true, true, 1639755555L, "3210", "Pershing Field", 40.742677141, -74.051788633, "2021-12-17", "15"),
@@ -50,7 +64,39 @@ class AddPartitionColumnTest extends FeatureSpec with Matchers with GivenWhenThe
 
       resultDf.schema shouldBe expectedDf.schema
       resultDf.collect shouldBe expectedDf.collect
+
+      // teardown
+      TimeZone.setDefault(TimeZone.getTimeZone(initialTzId))
+
+    }
+
+    scenario("Add Partition Columns for invalid data") {
+      Given("Null timestamp on last updated column for Station Consumer")
+      val data = Seq(
+        Row(14, 4, true, true, null, "3210", "Pershing Field", 40.742677141, -74.051788633)
+      )
+      val initialDf = spark.createDataFrame(data, schema)
+
+      When("Partition Columns are Added")
+
+      val resultDf = initialDf.addPartition()
+
+      Then("The dt and hour columns will be null")
+
+      val expectedSchema = schema.add(StructField("dt",StringType,true))
+        .add(StructField("hour",StringType,true))
+
+      val expectedData = Seq(
+        Row(14, 4, true, true, null, "3210", "Pershing Field", 40.742677141, -74.051788633, null, null)
+      )
+
+      val expectedDf = spark.createDataFrame(expectedData, expectedSchema)
+
+      resultDf.collect shouldBe expectedDf.collect
+
+      // teardown
+      TimeZone.setDefault(TimeZone.getTimeZone(initialTzId))
+
     }
   }
-
 }
