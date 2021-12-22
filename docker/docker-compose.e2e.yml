@@ -4,19 +4,10 @@ services:
     image: halverneus/static-file-server
     networks:
       - streaming-data-internal
-    depends_on:
-      - mock-json-server-seeder
     ports:
       - 8080:8080
     volumes:
       - ./data:/web
-
-  mock-json-server-seeder:
-    image: python:3.9-alpine3.15
-    volumes:
-      - ./scripts:/scripts
-      - ./data:/web
-    command: sh /scripts/setup_mock_data_files.sh
 
   zookeeper-seed:
     build:
@@ -28,36 +19,6 @@ services:
     volumes:
       - ../zookeeper/e2e-seed.sh:/e2e-seed.sh
     command: [ "sh", "/e2e-seed.sh" ]
-
-  station-information-producer:
-    build:
-      context: ../CitibikeApiProducer
-      dockerfile: Dockerfile-station-information
-    depends_on:
-      - kafka
-      - zookeeper-seed
-      - mock-json-server
-    networks:
-      - streaming-data-internal
-    environment:
-      - PRODUCER_URL=http://mock-json-server:8080/mock_station_information.json
-      - PRODUCER_TOPIC=e2e_station_information
-      - PRODUCER_CRON=*/3 * * * * *
-
-  station-status-producer:
-    build:
-      context: ../CitibikeApiProducer
-      dockerfile: Dockerfile-station-status
-    depends_on:
-      - kafka
-      - zookeeper-seed
-      - mock-json-server
-    networks:
-      - streaming-data-internal
-    environment:
-      - PRODUCER_URL=http://mock-json-server:8080/mock_station_status.json
-      - PRODUCER_TOPIC=e2e_station_status
-      - PRODUCER_CRON=*/3 * * * * *
 
   station-san-francisco-producer:
     build:
@@ -97,6 +58,7 @@ services:
     depends_on:
       - kafka
       - zookeeper-seed
+      - mock-json-server
     networks:
       - streaming-data-internal
     environment:

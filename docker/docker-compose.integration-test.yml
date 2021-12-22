@@ -9,39 +9,6 @@ services:
     volumes:
       - ./data:/web
 
-  mock-json-server-seeder:
-    image: python:3.9-alpine3.15
-    volumes:
-      - ./scripts:/scripts
-      - ./data:/web
-    command: sh /scripts/setup_mock_data_files.sh
-
-  station-information-producer:
-    build:
-      context: ../CitibikeApiProducer
-      dockerfile: Dockerfile-station-information
-    depends_on:
-      - kafka
-      - zookeeper-seed
-    networks:
-      - streaming-data-internal
-    environment:
-      - PRODUCER_URL=http://mock-json-server:8080/mock_station_information.json
-      - PRODUCER_CRON=*/3 * * * * *
-
-  station-status-producer:
-    build:
-      context: ../CitibikeApiProducer
-      dockerfile: Dockerfile-station-status
-    depends_on:
-      - kafka
-      - zookeeper-seed
-    networks:
-      - streaming-data-internal
-    environment:
-      - PRODUCER_URL=http://mock-json-server:8080/mock_station_status.json
-      - PRODUCER_CRON=*/3 * * * * *
-
   station-san-francisco-producer:
     build:
       context: ../CitibikeApiProducer

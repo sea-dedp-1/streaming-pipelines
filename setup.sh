@@ -15,10 +15,6 @@ start-slave.sh 127.0.0.1:7077
 
 mkdir -p /tmp/spark-events && start-history-server.sh
 
-mkdir -p /tmp/tw/rawData/stationInformation/checkpoints
-mkdir -p /tmp/tw/rawData/stationInformation/data
-mkdir -p /tmp/tw/rawData/stationStatus/checkpoints
-mkdir -p /tmp/tw/rawData/stationStatus/data
 mkdir -p /tmp/tw/rawData/stationSanFrancisco/checkpoints
 mkdir -p /tmp/tw/rawData/stationSanFrancisco/data
 mkdir -p /tmp/tw/rawData/stationDataMarseille/checkpoints
@@ -31,17 +27,6 @@ mkdir -p /tmp/tw/stationMart/data
 zk_command="zookeeper-shell.sh 127.0.0.1:2181"
 
 $zk_command create /tw ''
-$zk_command create /tw/stationInformation ''
-$zk_command create /tw/stationInformation/kafkaBrokers 127.0.0.1:9092
-$zk_command create /tw/stationInformation/topic station_information
-$zk_command create /tw/stationInformation/checkpointLocation /tmp/tw/rawData/stationInformation/checkpoints
-$zk_command create /tw/stationInformation/dataLocation /tmp/tw/rawData/stationInformation/data
-
-$zk_command create /tw/stationStatus ''
-$zk_command create /tw/stationStatus/kafkaBrokers 127.0.0.1:9092
-$zk_command create /tw/stationStatus/topic station_status
-$zk_command create /tw/stationStatus/checkpointLocation /tmp/tw/rawData/stationStatus/checkpoints
-$zk_command create /tw/stationStatus/dataLocation /tmp/tw/rawData/stationStatus/data
 
 $zk_command create /tw/stationDataSF ''
 $zk_command create /tw/stationDataSF/kafkaBrokers 127.0.0.1:9092

@@ -4,7 +4,7 @@ set -e
 
 WAIT_INTERVAL=10
 MAX_RETRIES=18
-FOLDERS_TO_VALIDATE=(stationDataMarseille stationDataSF stationInformation stationStatus stationDataNYCV2)
+FOLDERS_TO_VALIDATE=(stationDataMarseille stationDataSF stationDataNYCV2)
 
 echo "===== Waiting for Hadoop to be ready ====="
 bash ./scripts/retry.sh \
@@ -21,4 +21,4 @@ done
 echo "===== e2e test for e2e output csv data====="
 
 bash ./scripts/retry.sh \
-  "./scripts/e2e-verify-csv-hdfs.sh" ${WAIT_INTERVAL} ${MAX_RETRIES}
+  "./scripts/e2e-verify-csv-hdfs.sh" ${WAIT_INTERVAL} 30

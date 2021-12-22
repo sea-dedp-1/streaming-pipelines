@@ -10,7 +10,7 @@ trap clean_up EXIT
 
 make integration_test
 
-for TOPIC in station_data_marseille station_data_sf station_information station_status station_data_nyc_v2
+for TOPIC in station_data_marseille station_data_sf station_data_nyc_v2
 do
   echo "===== Integration test for Kafka Topic: ${TOPIC} ====="
 
@@ -18,7 +18,7 @@ do
     "./scripts/integration-test-kafka-producer.sh -t ${TOPIC}"
 done
 
-for RAW_DATA_FOLDER in stationDataMarseille stationDataSF stationInformation stationStatus stationDataNYCV2
+for RAW_DATA_FOLDER in stationDataMarseille stationDataSF stationDataNYCV2
 do
   echo "===== Integration test for HDFS raw data: ${RAW_DATA_FOLDER} ====="
 
