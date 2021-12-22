@@ -7,3 +7,5 @@ case class StationData(
                           station_id: String, name: String,
                           latitude: Double, longitude: Double
                         )
+
+
