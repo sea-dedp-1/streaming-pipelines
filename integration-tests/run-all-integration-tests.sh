@@ -10,7 +10,7 @@ trap clean_up EXIT
 
 make integration_test
 
-for TOPIC in station_data_marseille station_data_sf station_information station_status
+for TOPIC in station_data_marseille station_data_sf station_information station_status station_data_nyc_v2
 do
   echo "===== Integration test for Kafka Topic: ${TOPIC} ====="
 
