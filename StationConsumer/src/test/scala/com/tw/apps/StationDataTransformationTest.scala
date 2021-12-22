@@ -1,6 +1,6 @@
 package com.tw.apps
 
-import StationDataTransformation.{nycStationStatusJson2DF, sfStationStatusJson2DF}
+import StationDataTransformation.{nycStationStatusJson2DF, cityBikesStationStatusJson2DF}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.ScalaReflection
 import org.scalatest._
@@ -67,7 +67,7 @@ class StationDataTransformationTest extends FeatureSpec with Matchers with Given
       row1.get(8) should be(-73.97632328)
     }
 
-    scenario("Transfrom SF data to dataframe") {
+    scenario("Transfrom citibikes data to dataframe") {
       Given("Sample data")
       val testStationData =
         """
@@ -118,8 +118,8 @@ class StationDataTransformationTest extends FeatureSpec with Matchers with Given
 
       val testDF = Seq(testStationData).toDF("raw_payload")
 
-      When("Transform with sfStationStatusJson2DF")
-      val resultDF = testDF.transform(sfStationStatusJson2DF(_, spark))
+      When("Transform with cityBikesStationStatusJson2DF")
+      val resultDF = testDF.transform(cityBikesStationStatusJson2DF(_, spark))
 
       Then("Useful columns are extracted")
       resultDF.schema.fields(0).name should be("bikes_available")
@@ -157,7 +157,7 @@ class StationDataTransformationTest extends FeatureSpec with Matchers with Given
       row1.get(8) should be(-122.270582)
     }
 
-    scenario("Transfrom empty SF data to dataframe") {
+    scenario("Transfrom empty citibikes data to dataframe") {
       Given("Sample data without stations")
       val testStationData =
         """
@@ -190,8 +190,8 @@ class StationDataTransformationTest extends FeatureSpec with Matchers with Given
 
       val testDF = Seq(testStationData).toDF("raw_payload")
 
-      When("Transform with sfStationStatusJson2DF")
-      val resultDF = testDF.transform(sfStationStatusJson2DF(_, spark))
+      When("Transform with cityBikesStationStatusJson2DF")
+      val resultDF = testDF.transform(cityBikesStationStatusJson2DF(_, spark))
 
       Then("Useful columns are extracted")
       resultDF.schema.fields(0).name should be("bikes_available")

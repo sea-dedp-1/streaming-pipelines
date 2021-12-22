@@ -12,7 +12,7 @@ import scala.util.parsing.json.JSON
 
 object StationDataTransformation {
 
-  val sfToStationStatus: String => Seq[StationData] = raw_payload => {
+  val rawCitiBikesDataToStationStatus: String => Seq[StationData] = raw_payload => {
     val json = JSON.parseFull(raw_payload)
     val payload = json.get.asInstanceOf[Map[String, Any]]("payload")
     extractSFStationStatus(payload)
@@ -39,8 +39,8 @@ object StationDataTransformation {
       })
   }
 
-  def sfStationStatusJson2DF(jsonDF: DataFrame, spark: SparkSession): DataFrame = {
-    val toStatusFn: UserDefinedFunction = udf(sfToStationStatus)
+  def cityBikesStationStatusJson2DF(jsonDF: DataFrame, spark: SparkSession): DataFrame = {
+    val toStatusFn: UserDefinedFunction = udf(rawCitiBikesDataToStationStatus)
 
     import spark.implicits._
 

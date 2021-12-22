@@ -19,7 +19,7 @@ object StationApp {
 
     val stationKafkaBrokers = new String(zkClient.getData.forPath("/tw/stationStatus/kafkaBrokers"))
 
-    val nycStationTopic = new String(zkClient.getData.watched.forPath("/tw/stationDataNYC/topic"))
+    val nycStationTopic = new String(zkClient.getData.watched.forPath("/tw/stationDataNYCV2/topic"))
     val sfStationTopic = new String(zkClient.getData.watched.forPath("/tw/stationDataSF/topic"))
 
     val checkpointLocation = new String(
@@ -42,7 +42,7 @@ object StationApp {
       .option("failOnDataLoss", "false")
       .load()
       .selectExpr("CAST(value AS STRING) as raw_payload")
-      .transform(nycStationStatusJson2DF(_, spark))
+      .transform(cityBikesStationStatusJson2DF(_, spark))
 
     val sfStationDF = spark.readStream
       .format("kafka")
@@ -52,7 +52,7 @@ object StationApp {
       .option("failOnDataLoss", "false")
       .load()
       .selectExpr("CAST(value AS STRING) as raw_payload")
-      .transform(sfStationStatusJson2DF(_, spark))
+      .transform(cityBikesStationStatusJson2DF(_, spark))
 
     nycStationDF
       .union(sfStationDF)
