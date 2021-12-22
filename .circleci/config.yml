@@ -16,7 +16,9 @@ jobs:
                 keys:
                     - scala-dependencies-{{ checksum "./RawDataSaver/build.sbt" }}-{{ checksum "./StationConsumer/build.sbt"}}-{{ checksum "./StationTransformerNYC/build.sbt"}}
             - run:
-                command: ./sbin/buildAll.sh               
+                command: sbt --version
+            - run:
+                command: ./sbin/buildAll.sh
             - persist_to_workspace:
                 root: /home/circleci/project
                 paths:
@@ -54,12 +56,12 @@ workflows:
             - build:
                 filters:
                     branches:
-                        only: 
+                        only:
                             - master
                             - start
             - approve-deploy:
                 type: approval
-                requires: 
+                requires:
                     - build
             - deploy:
                 requires:
