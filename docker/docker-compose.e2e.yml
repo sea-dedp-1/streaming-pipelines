@@ -90,3 +90,17 @@ services:
       - PRODUCER_PRODUCERID=e2e_producer_station-marseille
       - PRODUCER_CRON=*/3 * * * * *
 
+  station-nyc-v2-producer:
+    build:
+      context: ../CitibikeApiProducer
+      dockerfile: Dockerfile-station-nyc-v2
+    depends_on:
+      - kafka
+      - zookeeper-seed
+    networks:
+      - streaming-data-internal
+    environment:
+      - PRODUCER_URL=http://mock-json-server:8080/mock_station_data_nyc_v2.json
+      - PRODUCER_TOPIC=e2e_station_data_nyc_v2
+      - PRODUCER_CRON=*/3 * * * * *
+

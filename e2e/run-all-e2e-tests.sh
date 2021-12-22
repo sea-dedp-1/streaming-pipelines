@@ -4,7 +4,7 @@ set -e
 
 WAIT_INTERVAL=10
 MAX_RETRIES=18
-FOLDERS_TO_VALIDATE=(stationDataMarseille stationDataSF stationInformation stationStatus)
+FOLDERS_TO_VALIDATE=(stationDataMarseille stationDataSF stationInformation stationStatus stationDataNYCV2)
 
 echo "===== Waiting for Hadoop to be ready ====="
 bash ./scripts/retry.sh \

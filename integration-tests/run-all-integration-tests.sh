@@ -18,7 +18,7 @@ do
     "./scripts/integration-test-kafka-producer.sh -t ${TOPIC}"
 done
 
-for RAW_DATA_FOLDER in stationDataMarseille stationDataSF stationInformation stationStatus
+for RAW_DATA_FOLDER in stationDataMarseille stationDataSF stationInformation stationStatus stationDataNYCV2
 do
   echo "===== Integration test for HDFS raw data: ${RAW_DATA_FOLDER} ====="
 

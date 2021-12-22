@@ -55,6 +55,12 @@ $zk_command create /tw/stationDataMarseille/topic station_data_marseille
 $zk_command create /tw/stationDataMarseille/checkpointLocation /tmp/tw/rawData/stationDataMarseille/checkpoints
 $zk_command create /tw/stationDataMarseille/dataLocation /tmp/tw/rawData/stationDataMarseille/data
 
+$zk_command create /tw/stationDataNYCV2 ''
+$zk_command create /tw/stationDataNYCV2/kafkaBrokers 127.0.0.1:9092
+$zk_command create /tw/stationDataNYCV2/topic station_data_nyc_v2
+$zk_command create /tw/stationDataNYCV2/checkpointLocation /tmp/tw/rawData/stationDataNYCV2/checkpoints
+$zk_command create /tw/stationDataNYCV2/dataLocation /tmp/tw/rawData/stationDataNYCV2/data
+
 $zk_command create /tw/output ''
 $zk_command create /tw/output/checkpointLocation /tmp/tw/stationMart/checkpoints
 $zk_command create /tw/output/dataLocation /tmp/tw/stationMart/data

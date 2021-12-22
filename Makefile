@@ -1,3 +1,7 @@
+.PHONY: build
+build:
+	./sbin/buildAll.sh
+
 dev:
 	./sbin/buildAndRunLocal.sh
 
@@ -9,7 +13,7 @@ hadoop_healthcheck:
 yarn_healthcheck:
 	curl -sS --fail http://localhost:8088/cluster > /dev/null
 
-up_integration_test:
+up_integration_test: build
 	./docker/docker-compose.sh -f docker/docker-compose.yml -f docker/docker-compose.integration-test.yml up --build -d
 
 down_integration_test:
@@ -19,7 +23,7 @@ integration_test: down_integration_test up_integration_test
 run_integration_test:
 	./integration-tests/run-all-integration-tests.sh
 
-up_e2e:
+up_e2e: build
 	./docker/docker-compose.sh -f docker/docker-compose.yml -f docker/docker-compose.e2e.yml up --build -d
 
 down_e2e:
