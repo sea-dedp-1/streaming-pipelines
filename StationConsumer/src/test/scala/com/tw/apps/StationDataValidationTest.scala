@@ -31,9 +31,32 @@ class StationDataValidationTest extends FeatureSpec with Matchers with GivenWhen
       val (validatedDF, errorDF) = StationDataValidation.validateLatLong(rawDF, spark.emptyDataset)
 
       Then("Validated DF contains valid rows")
-      validatedDF.collect should be(validData.toArray)
+      validatedDF.collect should be(validData)
 
       Then("Error DF will contain rows with null lat")
+      errorDF.collect should be(invalidData)
+    }
+
+    scenario("Validate that bikes available and docks available in data is not negative") {
+
+      Given("Transformed data for Station Consumer contains invalid bikes_available or docks_available values")
+
+      val invalidData = Seq(
+        StationData(-1, 9, is_renting = true, is_returning = true, 1640155967L, "bc0b154a7de61364485deb1bb518f006", "24th St at Bartlett St", 40.807408, -122.41997372800698),
+        StationData(5, -2, is_renting = true, is_returning = true, 1639755555L, "3949", "Brook Ave & E 138 St", 40.807408, -122.41997372800698),
+        StationData(-2, -3, is_renting = true, is_returning = true, 1639755555L, "3949", "Brook Ave & E 138 St", 40.807408, -122.41997372800698)
+      )
+
+      val data = validData ++ invalidData
+      val rawDF = data.toDS()
+
+      When("Validate Bikes Docks fields not negative")
+      val (validatedDF, errorDF) = StationDataValidation.validateBikesDocksAvailable(rawDF, spark.emptyDataset)
+
+      Then("Validated DF contains valid rows")
+      validatedDF.collect should be(validData)
+
+      Then("Error DF will contain rows with negative bikes and docks")
       errorDF.collect should be(invalidData)
     }
   }

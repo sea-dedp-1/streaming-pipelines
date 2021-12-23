@@ -9,5 +9,12 @@ object StationDataValidation {
 
     (validatedDF, errorDF.union(newErrorDF))
   }
+
+  def validateBikesDocksAvailable(df: Dataset[StationData], errorDF: Dataset[StationData]): (Dataset[StationData], Dataset[StationData]) = {
+    val validatedDF = df.filter(x => x.bikes_available >= 0 && x.docks_available >= 0)
+    val newErrorDF = df.filter(x => x.bikes_available < 0 || x.docks_available < 0)
+
+    (validatedDF, errorDF.union(newErrorDF))
+  }
 }
 
