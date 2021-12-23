@@ -29,6 +29,9 @@ object StationApp {
     val outputLocation = new String(
       zkClient.getData.watched.forPath("/tw/output/dataLocation"))
 
+    val errorLocation = new String(
+      zkClient.getData.watched.forPath("/tw/output/errorLocation"))
+
     val spark = SparkSession.builder
       .appName("StationConsumer")
       .getOrCreate()
@@ -55,12 +58,16 @@ object StationApp {
       .selectExpr("CAST(value AS STRING) as raw_payload")
       .transform(cityBikesStationStatusJson2DF(_, spark))
 
-    nycStationDF
+    val rawDF = nycStationDF
       .union(sfStationDF)
       .as[StationData]
       .groupByKey(r=>r.station_id)
       .reduceGroups((r1,r2)=>if (r1.last_updated > r2.last_updated) r1 else r2)
       .map(_._2)
+
+    val (validatedDF, errorDF) = StationDataValidation.validate(rawDF, spark.emptyDataset)
+
+    validatedDF
       .writeStream
       .format("overwriteCSV")
       .outputMode("complete")
@@ -68,6 +75,17 @@ object StationApp {
       .option("truncate", false)
       .option("checkpointLocation", checkpointLocation)
       .option("path", outputLocation)
+      .start()
+      .awaitTermination()
+
+    errorDF
+      .writeStream
+      .format("overwriteCSV")
+      .outputMode("complete")
+      .option("header", true)
+      .option("truncate", false)
+      .option("checkpointLocation", checkpointLocation)
+      .option("path", errorLocation)
       .start()
       .awaitTermination()
 

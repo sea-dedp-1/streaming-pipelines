@@ -49,6 +49,7 @@ $zk_command create /tw/stationDataNYCV2/dataLocation /tmp/tw/rawData/stationData
 $zk_command create /tw/output ''
 $zk_command create /tw/output/checkpointLocation /tmp/tw/stationMart/checkpoints
 $zk_command create /tw/output/dataLocation /tmp/tw/stationMart/data
+$zk_command create /tw/output/errorLocation /tmp/tw/stationMart/error
 
 
 tail -f /dev/null
