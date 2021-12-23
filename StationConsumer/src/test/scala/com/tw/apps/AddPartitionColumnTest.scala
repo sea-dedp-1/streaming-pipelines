@@ -1,14 +1,12 @@
 package com.tw.apps
 
-import org.apache.spark.sql.{Row, SparkSession}
-import org.apache.spark.sql.catalyst.ScalaReflection
+import com.tw.apps.StationDataTransformationUtils.StationDataDataframe
 import org.apache.spark.sql.types._
+import org.apache.spark.sql.{Row, SparkSession}
 import org.scalatest._
 
-import scala.collection.JavaConversions._
-import StationDataPartition.StationDataDataframe
-
 import java.util.TimeZone
+import scala.collection.JavaConversions._
 
 class AddPartitionColumnTest extends FeatureSpec with Matchers with GivenWhenThen {
 
@@ -59,7 +57,7 @@ class AddPartitionColumnTest extends FeatureSpec with Matchers with GivenWhenThe
         Row(7, 9, true, true, 1640155967L, "bc0b154a7de61364485deb1bb518f006", "24th St at Bartlett St", 37.7520708, -122.41997372800698, "2021-12-22", "06"),
         Row(5, 9, true, true, 1639755555L, "3949", "Brook Ave & E 138 St", 40.807408, -73.91924, "2021-12-17", "15")
       )
-
+// hive table already created create table schema partion by dt, hour
       val expectedDf = spark.createDataFrame(expectedData, expectedSchema)
 
       resultDf.schema shouldBe expectedDf.schema

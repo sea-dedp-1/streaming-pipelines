@@ -4,6 +4,7 @@ import StationDataTransformation._
 import org.apache.curator.framework.CuratorFrameworkFactory
 import org.apache.curator.retry.ExponentialBackoffRetry
 import org.apache.spark.sql.SparkSession
+import StationDataTransformationUtils.StationDataDataset
 
 object StationApp {
 
@@ -58,9 +59,7 @@ object StationApp {
     nycStationDF
       .union(sfStationDF)
       .as[StationData]
-      .groupByKey(r=>r.station_id)
-      .reduceGroups((r1,r2)=>if (r1.last_updated > r2.last_updated) r1 else r2)
-      .map(_._2)
+      .removeDuplicates()(spark)
       .writeStream
       .format("overwriteCSV")
       .outputMode("complete")
