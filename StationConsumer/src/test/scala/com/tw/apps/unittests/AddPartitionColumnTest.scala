@@ -1,4 +1,4 @@
-package com.tw.apps
+package com.tw.apps.unittests
 
 import com.tw.apps.StationDataTransformationUtils.StationDataDataframe
 import org.apache.spark.sql.types._

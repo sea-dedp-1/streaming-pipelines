@@ -1,6 +1,7 @@
-package com.tw.apps
+package com.tw.apps.unittests
 
-import StationDataTransformation.{nycStationStatusJson2DF, cityBikesStationStatusJson2DF}
+import com.tw.apps.StationData
+import com.tw.apps.StationDataTransformation.{cityBikesStationStatusJson2DF, nycStationStatusJson2DF}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.ScalaReflection
 import org.scalatest._

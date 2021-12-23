@@ -47,3 +47,7 @@ services:
     environment:
       - PRODUCER_URL=http://mock-json-server:8080/mock_station_data_nyc_v2.json
       - PRODUCER_CRON=*/3 * * * * *
+
+  kafka:
+    volumes:
+      - ./data:/tmp

@@ -1,5 +1,6 @@
-package com.tw.apps
+package com.tw.apps.unittests
 
+import com.tw.apps.StationData
 import com.tw.apps.StationDataTransformationUtils.StationDataDataset
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.{Row, SparkSession}
