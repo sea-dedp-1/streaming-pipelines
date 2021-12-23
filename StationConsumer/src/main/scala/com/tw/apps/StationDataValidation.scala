@@ -1,6 +1,6 @@
 package com.tw.apps
 
-import org.apache.spark.sql.{DataFrame, Dataset, Row}
+import org.apache.spark.sql.{Dataset}
 
 object StationDataValidation {
   def validateLatLong(df: Dataset[StationData], errorDF: Dataset[StationData]): (Dataset[StationData], Dataset[StationData]) = {
@@ -15,6 +15,12 @@ object StationDataValidation {
     val newErrorDF = df.filter(x => x.bikes_available < 0 || x.docks_available < 0)
 
     (validatedDF, errorDF.union(newErrorDF))
+  }
+
+  def validate(df: Dataset[StationData], errorDF: Dataset[StationData]): (Dataset[StationData], Dataset[StationData]) = {
+    val (validatedLatLongDF, errorLatLogDF) = validateLatLong(df, errorDF)
+
+    validateBikesDocksAvailable(validatedLatLongDF, errorLatLogDF)
   }
 }
 
