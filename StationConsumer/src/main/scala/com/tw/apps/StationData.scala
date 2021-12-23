@@ -5,5 +5,5 @@ case class StationData(
                           is_renting: Boolean, is_returning: Boolean,
                           last_updated: Long,
                           station_id: String, name: String,
-                          latitude: Double, longitude: Double
+                          latitude: java.lang.Double, longitude: java.lang.Double
                         )
